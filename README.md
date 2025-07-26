@@ -1,4 +1,4 @@
 git status
 git add .
-git commit -m "chat fix"
+git commit -m "fix"
 git push -u origin main
