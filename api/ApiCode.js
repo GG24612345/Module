@@ -5,7 +5,7 @@ const Supa_Key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsI
 const supabase = createClient(Supa_Url, Supa_Key);
 
 async function GetToken(PlaceID) {
-  console.log("[GetToken] Token recebido para busca:", Token);
+  console.log("[GetToken] Token recebido para busca:", PlaceID);
 
   const { data, error } = await supabase
     .from("Module")
