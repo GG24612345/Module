@@ -1,7 +1,8 @@
- import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js";
 
 const Supa_Url = "https://jidtpypbthsqjjpgvcud.supabase.co";
-const Supa_Key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImppZHRweXBidGhzcWpqcGd2Y3VkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4OTk0OTksImV4cCI6MjA2NDQ3NTQ5OX0.1OpiwpYRKIYu2KXEkyESk8xQh3U0Jc9BuFFawYjN15o";
+const Supa_Key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."; // Key pública (anon)
+
 const supabase = createClient(Supa_Url, Supa_Key);
 
 async function GetToken(PlaceID) {
@@ -14,7 +15,7 @@ async function GetToken(PlaceID) {
     .single();
 
   if (error) {
-    console.log("[GetToken] Erro ao buscar token:", error);
+    console.error("[GetToken] Erro ao buscar token:", error.message);
     return null;
   }
 
@@ -24,9 +25,16 @@ async function GetToken(PlaceID) {
 
 export default async function handler(req, res) {
   const { PlaceID } = req.query;
-  return res.status(200).json(await GetToken(PlaceID));
+
+  if (!PlaceID) {
+    return res.status(400).json({ error: "PlaceID ausente na query" });
+  }
+
+  const data = await GetToken(PlaceID);
+
+  if (!data) {
+    return res.status(404).json({ error: "Token não encontrado" });
+  }
+
+  return res.status(200).json(data);
 }
-//git status
-//git add .
-//git commit -m "add supa-args"
-//git push
